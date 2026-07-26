@@ -674,16 +674,10 @@ async function loadHistory(options = {}) {
 
 async function refreshHistoryWithRetry() {
   await loadHistory();
-  await sleep(800);
-  await loadHistory();
 }
 
 async function refreshHistoryAfterSave() {
-  for (let attempt = 0; attempt < 3; attempt += 1) {
-    if (attempt > 0) await sleep(800);
-    await loadHistory({ showEmpty: false });
-    if (state.records.length > 0) return;
-  }
+  await loadHistory({ showEmpty: false });
 }
 async function login() {
   setBusy(els.loginButton, true);
@@ -896,6 +890,7 @@ els.photos.addEventListener('change', renderSelectedPhotoPreview);
 els.toast.addEventListener('click', hideToast);
 
 init();
+
 
 
 
