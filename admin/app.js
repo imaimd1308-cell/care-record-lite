@@ -332,8 +332,8 @@ function renderRecords(records = []) {
     main.type = 'button';
     main.className = 'record-main';
     main.innerHTML = `
-      <span class="record-date-cell">${record.serviceDate}${record.photo1FileId ? '<i class="photo-badge" aria-label="사진 있음" title="사진 있음">사진</i>' : ''}</span>
-      <span class="record-people"><strong>${record.providerName || record.providerId}</strong><span>${record.recipientName || record.recipientId}</span></span>
+      <span class="record-date-cell">${record.serviceDate}</span>
+      <span class="record-people"><strong>${record.providerName || record.providerId}</strong><span>${record.recipientName || record.recipientId}</span>${record.photo1FileId ? '<i class="photo-badge" aria-label="사진 있음" title="사진 있음">사진</i>' : ''}</span>
       <span class="record-duration">${minutesText(record.totalDurationMinutes)}</span>
     `;
     main.addEventListener('click', () => toggleRecordDetail(record));
