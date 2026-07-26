@@ -1,5 +1,5 @@
-﻿const CACHE_NAME = 'care-record-lite-provider-v5';
-const ASSETS = ['./index.html', './manifest.json'];
+﻿const CACHE_NAME = 'care-record-lite-provider-v6';
+const ASSETS = ['./manifest.json'];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
@@ -16,9 +16,12 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  if (event.request.url.includes('/app.js') || event.request.url.includes('/styles.css')) {
+
+  const url = new URL(event.request.url);
+  if (url.pathname.endsWith('/index.html') || url.pathname.endsWith('/') || url.pathname.endsWith('/app.js') || url.pathname.endsWith('/styles.css') || url.pathname.endsWith('/sw.js')) {
     event.respondWith(fetch(event.request));
     return;
   }
+
   event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request)));
 });
