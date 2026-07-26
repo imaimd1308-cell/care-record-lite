@@ -334,6 +334,7 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   min-height: 24px;
   margin-left: 6px;
   padding: 2px 7px;
@@ -344,6 +345,7 @@ button:disabled {
   font-style: normal;
   font-weight: 800;
   line-height: 1;
+  white-space: nowrap;
   vertical-align: middle;
 }
 .record-people {
@@ -361,6 +363,7 @@ button:disabled {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
 }
 
 
