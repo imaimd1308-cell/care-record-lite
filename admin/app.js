@@ -114,11 +114,18 @@ async function callApi(action, payload = {}) {
     requestId: `admin_local_${Date.now()}`,
     payload: { ...payload, adminPassword: state.adminPassword }
   };
-  const response = await fetch('/api/gas', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;charset=utf-8' },
-    body: JSON.stringify({ gasUrl: DEFAULT_GAS_URL, request })
-  });
+  const isLocalPreview = location.hostname === '127.0.0.1' || location.hostname === 'localhost';
+  const response = isLocalPreview
+    ? await fetch('/api/gas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        body: JSON.stringify({ gasUrl: DEFAULT_GAS_URL, request })
+      })
+    : await fetch(DEFAULT_GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(request)
+      });
   const data = await response.json();
   if (!data.ok) throw new Error(data.error && data.error.message ? data.error.message : '요청 실패');
   return data.data || {};
