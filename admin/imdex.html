@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>봄봄 케어 관리자</title>
+  <link rel="stylesheet" href="./styles.css?v=202607241830">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <h1>봄봄 케어 관리자</h1>
+      </div>
+      <button id="logoutButton" class="small-button hidden" type="button">나가기</button>
+    </header>
+
+    <main>
+      <section class="panel" id="loginPanel">
+        <label for="adminPassword">관리자 비밀번호</label>
+        <input id="adminPassword" type="password" autocomplete="current-password" placeholder="비밀번호">
+        <button id="loginButton" type="button">관리자 들어가기</button>
+      </section>
+
+      <nav class="tab-nav hidden" id="mainTabs">
+        <button id="recordsTab" class="tab-button active" type="button">기록</button>
+        <button id="peopleTab" class="tab-button" type="button">회원</button>
+        <button id="matchesTab" class="tab-button" type="button">매칭</button>
+      </nav>
+
+      <section id="recordsView">
+        <section class="panel hidden" id="filterPanel">
+          <div class="filter-grid">
+            <label>시작일<input id="dateFrom" type="date"></label>
+            <label>종료일<input id="dateTo" type="date"></label>
+            <label>제공자<select id="providerFilter"><option value="">전체</option></select></label>
+            <label>수여자<select id="recipientFilter"><option value="">전체</option></select></label>
+          </div>
+          <button id="searchButton" type="button">조회</button>
+        </section>
+
+        <section class="summary-grid hidden" id="summaryPanel">
+          <div class="summary-card"><span>총 건수</span><strong id="totalRecords">0건</strong></div>
+          <div class="summary-card"><span>총 시간</span><strong id="totalHours">0시간</strong></div>
+        </section>
+
+        <section class="panel hidden" id="serviceSummaryPanel">
+          <h2>서비스별 합계</h2>
+          <div id="serviceSummaryList" class="chip-list"></div>
+        </section>
+
+        <section class="panel hidden" id="recordsPanel">
+          <div class="section-title"><h2>기록 목록</h2></div>
+          <div id="recordsList" class="records-list"></div>
+        </section>
+      </section>
+
+      <section class="hidden" id="peopleView">
+        <section class="panel">
+          <div class="person-type-row">
+            <button id="providerTypeButton" class="type-button active" type="button">제공자</button>
+            <button id="recipientTypeButton" class="type-button" type="button">수여자</button>
+          </div>
+          <div class="person-form-grid">
+            <label><div class="id-input-row"><span id="personIdPrefix">P-</span><input id="personId" type="text" inputmode="numeric" maxlength="3" placeholder="001"></div></label>
+            <label><input id="personName" type="text" placeholder="이름"></label>
+            <label><input id="personPhone" type="tel" placeholder="전화번호"></label>
+            <label><select id="personStatus"><option value="A">활성</option><option value="I">비활성</option></select></label>
+            <label id="providerPinLabel"><input id="personPin" type="text" inputmode="numeric" maxlength="4" placeholder="PIN 번호 : 변경할 때만"></label>
+            <label id="recipientAddressLabel" class="wide hidden"><input id="personAddress" type="text" placeholder="주소"></label>
+            <label id="guardianNameLabel" class="hidden"><input id="guardianName" type="text" placeholder="보호자 이름"></label>
+            <label id="guardianPhoneLabel" class="hidden"><input id="guardianPhone" type="tel" placeholder="보호자 전화"></label>
+            <label class="wide"><input id="personNote" type="text" placeholder="비고 : 필요할 때만"></label>
+          </div>
+          <div class="action-row">
+            <button id="savePersonButton" type="button">저장</button>
+            <button id="clearPersonButton" class="secondary-button" type="button">새 입력</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-title"><h2 id="peopleListTitle">제공자 목록</h2></div>
+          <label class="search-label">이름 검색<input id="peopleSearch" type="search" placeholder="이름, ID, 전화번호"></label>
+          <div id="peopleList" class="people-list"></div>
+        </section>
+      </section>
+
+      <section class="hidden" id="matchesView">
+        <section class="panel">
+          <div class="match-form-grid">
+            <label class="wide"><select id="matchProviderSelect"><option value="">제공자</option></select></label>
+            <div class="wide current-match-box hidden" id="currentMatchBox"></div>
+            <label class="wide"><select id="matchRecipientSelect"><option value="">수여자</option></select></label>
+            <label><input id="matchStartDate" type="date"></label>
+            <label><select id="matchActive"><option value="A">활성</option><option value="I">비활성</option></select></label>
+            <label class="wide"><input id="matchNote" type="text" placeholder="비고 : 필요할 때만"></label>
+          </div>
+          <div class="action-row">
+            <button id="saveMatchButton" type="button">매칭 저장</button>
+            <button id="clearMatchButton" class="secondary-button" type="button">새 입력</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-title"><h2>매칭 목록</h2></div>
+          <div id="matchesList" class="matches-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast hidden" id="toast"></div>
+  </div>
+
+  <script src="./app.js?v=202607261120"></script>
+</body>
+</html>
