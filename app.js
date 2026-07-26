@@ -1,4 +1,4 @@
-﻿const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbylbk4AxV9PJDl8VRi-o9wIOIxrxTNsd5MJyFGnATirp2643hXXk0qnKjPQMR4VxlQ/exec';
+﻿const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbybvwcEw3dCHEA3mFC7jXzkdlBYWV_nLY-9u8oBAKc1xoSUBbdp7Ff8vC8-Ywtd0zA/exec';
 
 const storageKeys = {
   gasUrl: 'careLite.gasUrl',
@@ -110,20 +110,18 @@ async function callApi(action, payload = {}, useAuth = true) {
     request.auth = { providerSessionToken: state.token };
   }
 
-  let response;
-  if (location.protocol.startsWith('http')) {
-    response = await fetch('/api/gas', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({ gasUrl, request })
-    });
-  } else {
-    response = await fetch(gasUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(request)
-    });
-  }
+  const isLocalPreview = location.hostname === '127.0.0.1' || location.hostname === 'localhost';
+  const response = isLocalPreview
+    ? await fetch('/api/gas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        body: JSON.stringify({ gasUrl, request })
+      })
+    : await fetch(gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(request)
+      });
 
   const data = await response.json();
   if (!data.ok) {
@@ -890,6 +888,7 @@ els.photos.addEventListener('change', renderSelectedPhotoPreview);
 els.toast.addEventListener('click', hideToast);
 
 init();
+
 
 
 
