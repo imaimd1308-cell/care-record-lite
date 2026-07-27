@@ -1,4 +1,4 @@
-﻿const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyKDu_FDFkGghP-yZillNO7TAycpIYvHpjXjDTj1sJbEt67Ocm0T4XlEfrAjSBXoA/exec';
+﻿const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwSdnCexLO6mD87rWwBr7mNyncgLmiZyEoaMBStUyii6X4CA-0PyLP_4gMNNfBoGEM/exec';
 
 const storageKeys = {
   gasUrl: 'careLite.gasUrl',
