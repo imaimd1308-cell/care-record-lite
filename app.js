@@ -2,7 +2,7 @@
 
 const storageKeys = {
   gasUrl: 'careLite.gasUrl',
-  serviceTypes: 'careLite.serviceTypes'
+  serviceTypes: 'careLite.serviceTypes.v2'
 };
 
 const $ = (id) => document.getElementById(id);
