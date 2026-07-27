@@ -274,7 +274,7 @@ function renderRecordDetail(record, card) {
   services.className = 'detail-services';
   (record.items || []).forEach((item) => {
     const row = document.createElement('div');
-    row.textContent = `${item.startTime}~${item.endTime} ${item.serviceTypeName || item.serviceTypeId} (${minutesText(item.durationMinutes)})`;
+    row.textContent = `${item.startTime}~${item.endTime} ${item.serviceTypeName || item.serviceTypeId} (${minutesText(item.durationMinutes)}, ${Number(item.point || 0)}점)`;
     services.appendChild(row);
   });
   if (!services.children.length) services.textContent = '제공 서비스 내역이 없습니다.';
