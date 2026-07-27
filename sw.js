@@ -1,4 +1,4 @@
-const CACHE_NAME = 'care-record-lite-provider-v7';
+const CACHE_NAME = 'care-record-lite-provider-v8';
 const ASSETS = ['./manifest.json'];
 
 self.addEventListener('install', (event) => {

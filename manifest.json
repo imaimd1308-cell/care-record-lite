@@ -1,4 +1,4 @@
-﻿{
+{
     "display":  "standalone",
     "icons":  [
                   {
@@ -16,8 +16,8 @@
               ],
     "background_color":  "#fff4bb",
     "theme_color":  "#12345a",
-    "name":  "봄봄 케어",
+    "name":  "봄봄 살롱",
     "start_url":  "./index.html",
     "scope":  "./",
-    "short_name":  "봄봄 케어"
+    "short_name":  "봄봄"
 }
