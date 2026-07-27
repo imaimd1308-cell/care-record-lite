@@ -272,42 +272,20 @@ button:disabled {
 }
 
 .time-control {
-  display: grid;
-  grid-template-columns: 34px minmax(42px, 1fr) 34px;
-  gap: 3px;
-  align-items: center;
+  display: block;
   margin-top: 5px;
 }
 
-.time-control button {
-  min-height: 42px;
+.time-select {
+  width: 100%;
+  min-height: 50px;
   margin: 0;
-  padding: 0;
-  background: var(--yellow);
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
   color: var(--text);
-}
-
-.hour-input {
-  min-height: 42px;
-  margin: 0;
-  padding: 5px;
-  text-align: center;
-}
-
-.minute-toggle {
-  display: grid;
-  grid-column: 1 / -1;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-}
-
-.minute-toggle button {
-  min-height: 40px;
-}
-
-.minute-toggle button.active {
-  background: var(--yellow-strong);
-  color: var(--text);
+  font-size: 1.04rem;
 }
 
 .hint {

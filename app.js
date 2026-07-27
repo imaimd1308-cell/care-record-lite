@@ -132,78 +132,58 @@ async function callApi(action, payload = {}, useAuth = true) {
   return data.data || {};
 }
 
-function padHour(value) {
-  let hour = Number(value);
-  if (!Number.isFinite(hour)) hour = 0;
-  if (hour < 0) hour = 23;
-  if (hour > 23) hour = 0;
-  return String(hour).padStart(2, '0');
-}
-
-function normalizeMinute(value) {
-  return String(value) === '30' ? '30' : '00';
-}
-
-function setMinute(control, minute) {
-  control.dataset.minute = normalizeMinute(minute);
-  control.querySelectorAll('.minute-toggle button').forEach((button) => {
-    button.classList.toggle('active', button.dataset.minute === control.dataset.minute);
-  });
-}
-
 function formatTime(control) {
-  const input = control.querySelector('.hour-input');
-  input.value = padHour(input.value);
-  return `${input.value}:${normalizeMinute(control.dataset.minute)}`;
+  const select = control.querySelector('.time-select');
+  return select ? select.value : '';
 }
 
 function setTime(control, timeText) {
-  const parts = String(timeText || '09:00').split(':');
-  control.querySelector('.hour-input').value = padHour(parts[0]);
-  setMinute(control, parts[1]);
+  const select = control.querySelector('.time-select');
+  if (!select) return;
+  const normalized = normalizeTimeOption(timeText || nearestHalfHourText());
+  select.value = normalized;
+  if (!select.value) select.value = '09:00';
 }
 
-function changeHour(input, delta) {
-  input.value = padHour(Number(input.value || 0) + delta);
+function normalizeTimeOption(timeText) {
+  const parts = String(timeText || '').split(':');
+  let hour = Number(parts[0]);
+  let minute = Number(parts[1]);
+  if (!Number.isFinite(hour)) hour = 9;
+  if (hour < 0) hour = 0;
+  if (hour > 23) hour = 23;
+  minute = minute >= 30 ? 30 : 0;
+  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+function nearestHalfHourText() {
+  const now = new Date();
+  let hour = now.getHours();
+  const minute = now.getMinutes() < 30 ? 0 : 30;
+  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+function fillTimeOptions(select) {
+  select.innerHTML = '';
+  for (let hour = 0; hour < 24; hour += 1) {
+    ['00', '30'].forEach((minute) => {
+      const value = `${String(hour).padStart(2, '0')}:${minute}`;
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = value;
+      select.appendChild(option);
+    });
+  }
 }
 
 function createTimeControl(control, timeText) {
   control.innerHTML = '';
 
-  const minus = document.createElement('button');
-  minus.type = 'button';
-  minus.textContent = '-';
-
-  const input = document.createElement('input');
-  input.className = 'hour-input';
-  input.inputMode = 'numeric';
-  input.maxLength = 2;
-
-  const plus = document.createElement('button');
-  plus.type = 'button';
-  plus.textContent = '+';
-
-  const minuteWrap = document.createElement('div');
-  minuteWrap.className = 'minute-toggle';
-
-  const m00 = document.createElement('button');
-  m00.type = 'button';
-  m00.textContent = '00';
-  m00.dataset.minute = '00';
-
-  const m30 = document.createElement('button');
-  m30.type = 'button';
-  m30.textContent = '30';
-  m30.dataset.minute = '30';
-
-  minus.addEventListener('click', () => changeHour(input, -1));
-  plus.addEventListener('click', () => changeHour(input, 1));
-  input.addEventListener('blur', () => { input.value = padHour(input.value); });
-  m00.addEventListener('click', () => setMinute(control, '00'));
-  m30.addEventListener('click', () => setMinute(control, '30'));
-
-  minuteWrap.append(m00, m30);
-  control.append(minus, input, plus, minuteWrap);
+  const select = document.createElement('select');
+  select.className = 'time-select';
+  select.setAttribute('aria-label', '시간 선택');
+  fillTimeOptions(select);
+  control.appendChild(select);
   setTime(control, timeText);
 }
 
@@ -302,10 +282,12 @@ function fillServiceTypeOptions(select) {
 
 function defaultNextTimes() {
   const last = els.itemsList.lastElementChild;
-  if (!last) return { startTime: '09:00', endTime: '10:00' };
+  if (!last) {
+    const startTime = nearestHalfHourText();
+    return { startTime, endTime: startTime };
+  }
   const lastEnd = formatTime(last.querySelector('.item-end'));
-  const endHour = Math.min(23, Number(lastEnd.slice(0, 2)) + 1);
-  return { startTime: lastEnd, endTime: `${String(endHour).padStart(2, '0')}:${lastEnd.slice(3)}` };
+  return { startTime: lastEnd, endTime: lastEnd };
 }
 
 function addItem(defaults = {}, options = {}) {
@@ -319,7 +301,10 @@ function addItem(defaults = {}, options = {}) {
   type.dataset.selected = defaults.serviceTypeId || '';
   fillServiceTypeOptions(type);
   createTimeControl(startControl, times.startTime || '09:00');
-  createTimeControl(endControl, times.endTime || '10:00');
+  createTimeControl(endControl, times.endTime || times.startTime || '09:00');
+  startControl.querySelector('.time-select').addEventListener('change', () => {
+    setTime(endControl, formatTime(startControl));
+  });
 
   if (options.hideRemove) {
     removeButton.classList.add('hidden');
@@ -429,7 +414,7 @@ function showRecordDetail(record) {
   (record.items || []).forEach((item) => {
     lines.push(`${item.startTime}-${item.endTime} ${item.serviceTypeName || item.serviceTypeId}`);
   });
-  if (record.note) lines.push(`특이사항: ${record.note}`);
+  if (record.note) lines.push(`활동기록: ${record.note}`);
   showToast(lines.join('\n'));
 }
 
