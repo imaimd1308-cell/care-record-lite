@@ -1,4 +1,4 @@
-﻿const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxsogS3cahvjYxLv5JFNHRFPWB8oPhqLQqBd96beCmo8loYlXHI0LYxVYovqFinz5Q/exec';
+﻿const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyAOrxH7e0myJJcMQrL7Nl4-Hi2q279gTpUtOLaMtpShev6_RFOjAkG2FTFeitsBPA/exec';
 
 const storageKeys = {
   gasUrl: 'careLite.gasUrl',
@@ -385,10 +385,11 @@ function renderHistory(records = state.records, options = {}) {
       .map((item) => item.serviceTypeName || item.serviceTypeId)
       .filter(Boolean)
       .join(', ');
+    const photoBadge = hasPhotoFileId(record.photo1FileId) ? '<i class="history-photo-badge">사진</i>' : '';
 
     const card = document.createElement('div');
     card.className = 'history-card';
-    card.innerHTML = `<strong>${record.serviceDate} ${record.recipientName || ''}</strong><span>${record.workStartTime}-${record.workEndTime} · ${record.totalDurationMinutes || 0}분${services ? ' · ' + services : ''}</span>`;
+    card.innerHTML = `<strong>${record.serviceDate} ${record.recipientName || ''}${photoBadge}</strong><span>${record.workStartTime}-${record.workEndTime} · ${record.totalDurationMinutes || 0}분${services ? ' · ' + services : ''}</span>`;
     card.addEventListener('click', () => handleRecordClick(record));
     els.historyList.appendChild(card);
   });
