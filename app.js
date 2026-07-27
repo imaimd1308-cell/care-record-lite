@@ -414,7 +414,7 @@ function showRecordDetail(record) {
   (record.items || []).forEach((item) => {
     lines.push(`${item.startTime}-${item.endTime} ${item.serviceTypeName || item.serviceTypeId}`);
   });
-  if (record.note) lines.push(`활동기록: ${record.note}`);
+  if (record.note) lines.push(`활동 기록: ${record.note}`);
   showToast(lines.join('\n'));
 }
 

@@ -112,6 +112,10 @@ h3 {
   white-space: nowrap;
 }
 
+.provider-line .point-badge {
+  margin-left: auto;
+}
+
 .point-badge.muted {
   background: #e1e8e6;
 }
