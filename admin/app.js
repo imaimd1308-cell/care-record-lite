@@ -40,6 +40,7 @@ const els = {
   recipientFilter: $('recipientFilter'),
   totalRecords: $('totalRecords'),
   totalHours: $('totalHours'),
+  totalPoints: $('totalPoints'),
   serviceSummaryList: $('serviceSummaryList'),
   recordsList: $('recordsList'),
   providerTypeButton: $('providerTypeButton'),
@@ -201,6 +202,7 @@ async function loadFilterOptions() {
 function renderSummary(summary = {}) {
   els.totalRecords.textContent = `${summary.totalRecords || 0}건`;
   els.totalHours.textContent = minutesText(summary.totalDurationMinutes || 0);
+  els.totalPoints.textContent = `${Number(summary.totalPoints || 0)}점`;
   els.serviceSummaryList.innerHTML = '';
   const items = summary.serviceTypes || [];
   if (items.length === 0) {
@@ -213,7 +215,7 @@ function renderSummary(summary = {}) {
   items.forEach((item) => {
     const chip = document.createElement('span');
     chip.className = 'chip';
-    chip.textContent = `${item.serviceTypeName}: ${minutesText(item.totalDurationMinutes)}`;
+    chip.textContent = `${item.serviceTypeName}: ${minutesText(item.totalDurationMinutes)} · ${Number(item.totalPoints || 0)}점`;
     els.serviceSummaryList.appendChild(chip);
   });
 }
