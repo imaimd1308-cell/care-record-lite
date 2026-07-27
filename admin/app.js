@@ -282,7 +282,7 @@ function renderRecordDetail(record, card) {
   renderPhotoArea(record, detail);
   const note = document.createElement('div');
   note.className = 'detail-note';
-  note.textContent = record.note ? `특이사항: ${record.note}` : '특이사항 없음';
+  note.textContent = record.note ? `활동기록: ${record.note}` : '활동기록 없음';
   detail.appendChild(note);
   card.appendChild(detail);
 }
