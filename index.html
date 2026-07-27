@@ -8,7 +8,7 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="./assets/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="./styles.css?v=202607260945">
+  <link rel="stylesheet" href="./styles.css?v=202607271130">
 </head>
 <body class="login-mode">
   <div class="app-shell">
@@ -44,6 +44,7 @@
           <strong id="providerName">-</strong>
           <span class="heart">♥</span>
           <strong id="currentRecipient">수여자 미지정</strong>
+          <span id="monthlyPointTotal" class="point-badge">이번 달 0점</span>
         </div>
       </section>
 
@@ -74,6 +75,7 @@
       <section class="panel hidden" id="historyPanel">
         <div class="section-title">
           <h2>내 기록</h2>
+          <span id="historyPointTotal" class="point-badge muted">0점</span>
           <button id="refreshHistoryButton" type="button" class="small-button muted">조회</button>
         </div>
         <div class="history-range">
@@ -101,7 +103,7 @@
     </div>
   </template>
 
-  <script src="./app.js?v=202607261125"></script>
+  <script src="./app.js?v=202607271130"></script>
 </body>
 </html>
 

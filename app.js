@@ -1,4 +1,4 @@
-﻿const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbybvwcEw3dCHEA3mFC7jXzkdlBYWV_nLY-9u8oBAKc1xoSUBbdp7Ff8vC8-Ywtd0zA/exec';
+﻿const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyKDu_FDFkGghP-yZillNO7TAycpIYvHpjXjDTj1sJbEt67Ocm0T4XlEfrAjSBXoA/exec';
 
 const storageKeys = {
   gasUrl: 'careLite.gasUrl',
@@ -27,6 +27,7 @@ const els = {
   providerBar: $('providerBar'),
   providerName: $('providerName'),
   currentRecipient: $('currentRecipient'),
+  monthlyPointTotal: $('monthlyPointTotal'),
   recordPanel: $('recordPanel'),
   notePanel: $('notePanel'),
   photoPanel: $('photoPanel'),
@@ -46,6 +47,7 @@ const els = {
   saveButton: $('saveButton'),
   cancelEditButton: $('cancelEditButton'),
   historyList: $('historyList'),
+  historyPointTotal: $('historyPointTotal'),
   historyFromDate: $('historyFromDate'),
   historyToDate: $('historyToDate'),
   refreshHistoryButton: $('refreshHistoryButton'),
@@ -237,6 +239,7 @@ function applyProvider(provider) {
   state.provider = provider;
   els.providerName.textContent = provider.name || provider.providerId || '-';
   els.currentRecipient.textContent = provider.currentRecipientName || '수여자 미지정';
+  els.monthlyPointTotal.textContent = '이번 달 0점';
   openMainPanels();
 }
 
@@ -247,6 +250,8 @@ function clearSession() {
   state.editingRecordId = '';
   els.providerId.value = '';
   els.pin.value = '';
+  els.monthlyPointTotal.textContent = '이번 달 0점';
+  els.historyPointTotal.textContent = '0점';
   renderHistory([]);
   resetEditMode();
   closeMainPanels();
@@ -664,9 +669,14 @@ function beginEdit(record) {
 async function loadHistory(options = {}) {
   const data = await callApi('getMyServiceRecords', {
     dateFrom: els.historyFromDate.value,
-    dateTo: els.historyToDate.value
+    dateTo: els.historyToDate.value,
+    monthDate: els.serviceDate.value
   }, true);
   state.records = data.records || [];
+  const totalPoints = Number((data.summary && data.summary.totalPoints) || 0);
+  const monthlyPoints = Number((data.summary && data.summary.monthlyPoints) || 0);
+  els.historyPointTotal.textContent = `${totalPoints}점`;
+  els.monthlyPointTotal.textContent = `이번 달 ${monthlyPoints}점`;
   renderHistory(state.records, options);
 }
 

@@ -99,6 +99,23 @@ h3 {
   font-weight: 900;
 }
 
+.point-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--text);
+  font-size: .94rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.point-badge.muted {
+  background: #e1e8e6;
+}
+
 .heart {
   color: var(--yellow-strong);
   font-weight: 400;
