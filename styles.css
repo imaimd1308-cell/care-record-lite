@@ -90,13 +90,14 @@ h3 {
 .provider-line {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
 }
 
 .provider-line strong {
   font-size: 1.04rem;
   font-weight: 900;
+  min-width: 0;
 }
 
 .point-badge {
@@ -114,6 +115,7 @@ h3 {
 
 .provider-line .point-badge {
   margin-left: auto;
+  flex: 0 0 auto;
 }
 
 .point-badge.muted {
